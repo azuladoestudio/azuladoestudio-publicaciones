@@ -2,7 +2,7 @@
 // Lo corre GitHub Actions cada 15 minutos. Publica una sola por vez.
 //   node publicar.mjs           publica de verdad
 //   node publicar.mjs --probar  prepara la imagen en Instagram pero no la publica
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 const API = 'https://graph.facebook.com/v24.0';
 const { IG_TOKEN, IG_USER_ID, IMG_BASE } = process.env;
@@ -57,6 +57,8 @@ if (probar) {
 const { id } = await llamar('POST', `${IG_USER_ID}/media_publish`, { creation_id: contenedor.id });
 const { permalink } = await llamar('GET', id, { fields: 'permalink' });
 
+// Ya está en Instagram: la imagen no hace falta más acá.
+rmSync(post.imagen, { force: true });
 Object.assign(post, { estado: 'publicada', publicada: new Date().toISOString(), link: permalink });
 writeFileSync('cola.json', JSON.stringify(cola, null, 2) + '\n');
 console.log(`Publicada: ${permalink}`);

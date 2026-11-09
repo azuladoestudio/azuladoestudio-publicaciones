@@ -35,5 +35,5 @@ jobs:
         run: |
           git config user.name "Azulado Publicador"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cola.json
+          git add -A cola.json imagenes
           git diff --cached --quiet || (git commit -m "Publicada en Instagram" && git push)
