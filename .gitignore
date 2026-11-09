@@ -1,0 +1,3 @@
+.secreto/
+*.txt
+node_modules/
